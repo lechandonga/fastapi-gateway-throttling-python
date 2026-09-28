@@ -1,0 +1,46 @@
+{
+  "rate_rules": [
+    {
+      "id": "caller-default",
+      "limit": 100,
+      "time_window_seconds": 60,
+      "scope": "caller",
+      "priority": 0,
+      "description": "每个调用方每分钟 100 次"
+    },
+    {
+      "id": "caller-search-burst",
+      "limit": 10,
+      "time_window_seconds": 1,
+      "scope": "caller_resource",
+      "resource": "search",
+      "priority": 0,
+      "description": "search 资源每秒 10 次（更具体，优先于 caller-default）"
+    },
+    {
+      "id": "global-cap",
+      "limit": 5000,
+      "time_window_seconds": 60,
+      "scope": "global",
+      "priority": 0,
+      "description": "全局限流兜底"
+    }
+  ],
+  "quota_rules": [
+    {
+      "id": "daily-quota",
+      "quota": 10000,
+      "scope": "caller",
+      "charge_on_failure": false,
+      "description": "每调用方日配额 1 万，下游失败自动退还"
+    },
+    {
+      "id": "paid-search-quota",
+      "quota": 500,
+      "scope": "caller_resource",
+      "resource": "search",
+      "charge_on_failure": true,
+      "description": "search 资源即便失败也计费（成本已发生）"
+    }
+  ]
+}
